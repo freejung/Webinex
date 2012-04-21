@@ -1,0 +1,1 @@
+<li>[[+eventdate]] at [[+starttime]] Mountain - Title: <strong>[[+pagetitle]]</strong> - Join URL: [[+joinurl]]</li>
