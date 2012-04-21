@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="webinex" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+
+    <object class="wxPresentation" table="wx_presentations" extends="xPDOSimpleObject">
+        <field key="eventdate" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="enddate" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="slides" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="joinurl" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="gtwid" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="dialin" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="accesscode" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="eventtype" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="primary" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="trailer" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
+        <field key="recording" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
+        <field key="webinar" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Trailer" class="vxVideo" local="trailer" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Recording" class="vxVideo" local="recording" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Webinar" class="wxWebinar" local="webinar" foreign="id" cardinality="one" owner="foreign"/>
+        <composite alias="PresentedBy" class="wxPresentedBy" local="id" foreign="presentation" cardinality="many" owner="local" />
+        <composite alias="Attachment" class="wxAttachment" local="id" foreign="presentation" cardinality="many" owner="local" />
+        <index alias="eventdate" name="eventdate" primary="false" unique="false" type="BTREE">
+            <column key="eventdate" length="" collation="A" null="false" />
+        </index>
+        <index alias="webinar" name="webinar" primary="false" unique="false" type="BTREE">
+            <column key="webinar" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxPresenter" table="wx_presenters" extends="xPDOSimpleObject">
+        <field key="firstname" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="lastname" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="shortbio" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="longbio" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="pic" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="email" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="phone" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="linkedin" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="twitter" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="url" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="sortorder" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="company" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Company" class="wxCompany" local="company" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="PresentedBy" class="wxPresentedBy" local="id" foreign="presenter" cardinality="many" owner="local" />
+        <index alias="email" name="email" primary="false" unique="false" type="BTREE">
+            <column key="email" length="" collation="A" null="false" />
+        </index>
+        <index alias="company" name="company" primary="false" unique="false" type="BTREE">
+            <column key="company" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxCompany" table="wx_companies" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="logo" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="description" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Presenter" class="wxPresenter" local="id" foreign="company" cardinality="many" owner="local" />
+        <index alias="name" name="name" primary="false" unique="false" type="BTREE">
+            <column key="name" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxAffiliate" table="wx_affiliates" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="logo" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="description" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="notes" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="code" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="state" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <composite alias="Endorsement" class="wxEndorsement" local="id" foreign="document" cardinality="many" owner="local" />
+    </object>
+    
+    <object class="wxDocument" table="wx_documents" extends="xPDOSimpleObject">
+        <field key="title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="url" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="doctype" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="description" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <composite alias="Attachment" class="wxAttachment" local="id" foreign="document" cardinality="many" owner="local" />
+        <index alias="title" name="title" primary="false" unique="false" type="BTREE">
+            <column key="title" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="vxVideo" table="vx_videos" extends="xPDOSimpleObject">
+        <field key="title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="url" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="imageurl" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="hostid" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="host" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="description" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="runtime" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="recordedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <index alias="title" name="title" primary="false" unique="false" type="BTREE">
+            <column key="title" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxWebinar" extends="modResource">
+        <composite alias="Presentation" class="wxPresentation" local="id" foreign="webinar" cardinality="many" owner="local" />
+    </object>
+    
+    <object class="wxPresentedBy" table="wx_presentedby" extends="xPDOSimpleObject">
+        <field key="presentation" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="presenter" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="Presentation" class="wxPresentation" local="presentation" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Presenter" class="wxPresenter" local="presenter" foreign="id" cardinality="one" owner="foreign" />
+        <index alias="presentation" name="presentation" primary="false" unique="false" type="BTREE">
+            <column key="presentation" length="" collation="A" null="false" />
+        </index>
+        <index alias="presenter" name="presenter" primary="false" unique="false" type="BTREE">
+            <column key="presenter" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxAttachment" table="wx_attachments" extends="xPDOSimpleObject">
+        <field key="presentation" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="document" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="Presentation" class="wxPresentation" local="presentation" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Document" class="wxDocument" local="document" foreign="id" cardinality="one" owner="foreign" />
+        <index alias="presentation" name="presentation" primary="false" unique="false" type="BTREE">
+            <column key="presentation" length="" collation="A" null="false" />
+        </index>
+        <index alias="document" name="document" primary="false" unique="false" type="BTREE">
+            <column key="document" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxEndorsement" table="wx_endorsements" extends="xPDOSimpleObject">
+        <field key="affiliate" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="category" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="Affiliate" class="wxAffiliate" local="affiliate" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Category" class="modResource" local="category" foreign="id" cardinality="one" owner="foreign" />
+        <index alias="affiliate" name="affiliate" primary="false" unique="false" type="BTREE">
+            <column key="affiliate" length="" collation="A" null="false" />
+        </index>
+        <index alias="category" name="category" primary="false" unique="false" type="BTREE">
+            <column key="category" length="" collation="A" null="false" />
+        </index>
+    </object>
+</model>
