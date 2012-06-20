@@ -25,8 +25,8 @@ $settings['webinex.third_template']->fromArray(array(
     'key' => 'webinex.third_template',
     'value' => 'wx-third.tpl',
     'xtype' => 'textfield',
-    'namespace' => 'templates',
-    'area' => 'paths',
+    'namespace' => 'webinex',
+    'area' => 'templates',
 ),'',true,true);
 
 $settings['webinex.default_prospect_group']= $modx->newObject('modSystemSetting');
@@ -44,7 +44,7 @@ $settings['webinex.registration_thanks_page']->fromArray(array(
     'value' => '1',
     'xtype' => 'textfield',
     'namespace' => 'webinex',
-    'area' => 'templates',
+    'area' => 'pages',
 ),'',true,true);
 
 $settings['webinex.ical_resource_id']= $modx->newObject('modSystemSetting');
@@ -53,7 +53,7 @@ $settings['webinex.ical_resource_id']->fromArray(array(
     'value' => '1',
     'xtype' => 'textfield',
     'namespace' => 'webinex',
-    'area' => 'templates',
+    'area' => 'pages',
 ),'',true,true);
 
 $settings['webinex.email_templates_category']= $modx->newObject('modSystemSetting');
