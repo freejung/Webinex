@@ -1,4 +1,13 @@
 <?php
+/**
+ * Webinex
+ *
+ * Copyright 2012 by Eli Snyder <freejung@gmail.com>
+ */
+/**
+ * @package webinex
+ * @subpackage model
+ */
 class wxPresentation extends xPDOSimpleObject {
 
     /* toFullArray returns an array of the presentation and related objects */

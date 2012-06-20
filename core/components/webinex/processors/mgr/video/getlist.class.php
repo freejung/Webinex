@@ -1,4 +1,13 @@
 <?php
+/**
+ * Webinex
+ *
+ * Copyright 2012 by Eli Snyder <freejung@gmail.com>
+ */
+/**
+ * @package webinex
+ * @subpackage processors
+ */
 class VideoGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'vxVideo';  
     public $languageTopics = array('webinex:default');

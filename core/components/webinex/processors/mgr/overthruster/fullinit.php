@@ -1,4 +1,13 @@
 <?php
+/**
+ * Webinex
+ *
+ * Copyright 2012 by Eli Snyder <freejung@gmail.com>
+ */
+/**
+ * @package webinex
+ * @subpackage processors
+ */
 $modx->log(modX::LOG_LEVEL_INFO, 'Initializing Webinex Overthruster... ');
 $webinex = $modx->getService('webinex','Webinex',$modx->getOption('webinex.core_path',null,$modx->getOption('core_path').'components/webinex/').'model/webinex/');
 if (!($webinex instanceof Webinex)){

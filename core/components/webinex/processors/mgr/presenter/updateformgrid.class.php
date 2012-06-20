@@ -1,4 +1,13 @@
 <?php
+/**
+ * Webinex
+ *
+ * Copyright 2012 by Eli Snyder <freejung@gmail.com>
+ */
+/**
+ * @package webinex
+ * @subpackage processors
+ */
 require_once (dirname(__FILE__).'/update.class.php');
 class PresenterUpdateFromGridProcessor extends PresenterUpdateProcessor {
     public function initialize() {

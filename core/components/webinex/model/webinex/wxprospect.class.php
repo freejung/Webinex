@@ -1,4 +1,13 @@
 <?php
+/**
+ * Webinex
+ *
+ * Copyright 2012 by Eli Snyder <freejung@gmail.com>
+ */
+/**
+ * @package webinex
+ * @subpackage model
+ */
 class wxProspect extends modUser {
     function __construct(xPDO & $xpdo) {
         parent :: __construct($xpdo);

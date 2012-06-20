@@ -1,4 +1,13 @@
 <?php
+/**
+ * Webinex
+ *
+ * Copyright 2012 by Eli Snyder <freejung@gmail.com>
+ */
+/**
+ * @package webinex
+ * @subpackage model
+ */
 $xpdo_meta_map['wxDocument']= array (
   'package' => 'webinex',
   'version' => '1.1',
