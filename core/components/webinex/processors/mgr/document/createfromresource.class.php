@@ -21,7 +21,7 @@ class DocumentCreateProcessor extends modObjectCreateProcessor {
     
     public function afterSave() {
         if($webinar = $this->modx->getObject('wxWebinar', $this->object->get('webinar'))) {
-        	   $document = $this->object;
+        	$document = $this->object;
             $presentation = $webinar->primaryPresentation();
             $attachment = $this->modx->newObject('wxAttachment');
             $attachment->addOne($document);
@@ -29,7 +29,7 @@ class DocumentCreateProcessor extends modObjectCreateProcessor {
             $attachmentArray = array();
             $attachmentArray[0] = $attachment;
             $presentation->addMany($attachmentArray);
-            $webinar->save();
+            $presentation->save();
         }
         return parent::afterSave();
     }

@@ -1,0 +1,2 @@
+[[!affiliateId]]
+[[listPresentations? &parents=`[[*parent]]` &where=`{"webinar" : [[*id]], "primary" : 1}` &tpl=`wx-presentation-lp.tpl`]]

@@ -116,22 +116,6 @@ Ext.extend(Webinex.panel.Webinar,MODx.panel.Resource,{
     },getMainRightFields: function(config) {
         config = config || {};
         return [{
-            xtype: 'modx-combo-template'
-            ,fieldLabel: _('resource_template')
-            ,description: '<b>[[*template]]</b><br />'+_('resource_template_help')
-            ,name: 'template'
-            ,id: 'modx-resource-template'
-            ,anchor: '100%'
-            ,editable: false
-            ,baseParams: {
-                action: 'getList'
-                ,combo: '1'
-                ,limit: 0
-            }
-            ,listeners: {
-                'select': {fn: this.templateWarning,scope: this}
-            }
-        },{
             xtype: 'textfield'
             ,fieldLabel: _('resource_alias')
             ,description: '<b>[[*alias]]</b><br />'+_('resource_alias_help')
@@ -216,13 +200,13 @@ Ext.extend(Webinex.panel.Webinar,MODx.panel.Resource,{
 
         },{
             xtype: 'textfield'
-            ,fieldLabel: 'Recording Running Time'
-            ,description: 'The time length of the recorded webinar.'
-            ,name: 'runningtime'
-            ,id: 'modx-resource-runningtime'
+            ,fieldLabel: 'Registration Form Identifier'
+            ,description: 'A code uniquely identifying the registration form to the marketing automation system.'
+            ,name: 'reg'
+            ,id: 'modx-resource-reg'
             ,maxLength: 255
             ,anchor: '70%'
-            ,value: config.record.runningtime || ''
+            ,value: config.record.reg || ''
 
         },{
             xtype: 'xcheckbox'

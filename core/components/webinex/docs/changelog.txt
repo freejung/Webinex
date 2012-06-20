@@ -1,0 +1,31 @@
+
+Webinex 0.3.0
+========================
+- various bug fixes, template and interface refinements
+- Added custom tables for registrations and referrals, to track affiliate activity
+- Added snippet affiliateId to identify and store affiliate referrals
+- Added extended user class for tracking prospects, related to registrations and referrals
+- Added formIt hooks to handle registration and resubmission to external marketing automation system
+- Added listDocuments snippet for listing webinar attachment documents
+- Added various example snippet template chunks, as well as chunks for sample registration, post-registration thanks, and iCalendar
+- Added some small utility snippets to help with registration, thanks and iCalendar pages: Now, presentationId and UTCDate
+- Improvements to listPresentations snippet to handle additional parameters
+- Consolidated recordedWebinars and upcomingWebinars snippets into the snippet getWebinars
+- Moved some procedural code into class methods
+- Added email template functionality, emails tab on webinar update page, sample email template chunks
+- Submitted to MODX repository
+
+Webinex 0.2.0
+========================
+- Created custom tables for presentations, presenters, companies, viedos, affiliates, and documents, with connector tables.
+- Created custom resource class Webinar, which can have many presentations
+- Created CMP for managing these tables
+- Created snippets upcomingWebinars, recordedWebinars, listPresenters, listPresentations
+- Created three default template chunks for presentations and template chunk for presenters
+- Created overThruster plugin to store processed templates for presentations
+- Initial commit
+
+Webinex 0.1.0
+========================
+- Early development version with trial schema
+

@@ -1,0 +1,7 @@
+<p>Dear (firstname)</p>
+<p>
+You are invited to the webinar [[+wbn.longtitle]] on [[+eventdate]].
+</p>
+<p>
+<a href="[[~[[+wbn.id]]? &scheme=`http`]][[+aff.code:notempty=`?ai=[[+aff.code]]`]]">Register for the Webinar</a>
+</p>

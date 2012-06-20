@@ -14,7 +14,14 @@ $xpdo_meta_map['wxPresentation']= array (
     'dialin' => '',
     'accesscode' => '',
     'eventtype' => '',
+    'reg' => '',
     'primary' => 0,
+    'parent' => 0,
+    'grandparent' => 0,
+    'firsttpl' => NULL,
+    'secondtpl' => NULL,
+    'thirdtpl' => NULL,
+    'tpls' => NULL,
     'trailer' => 0,
     'recording' => 0,
     'webinar' => 0,
@@ -85,6 +92,14 @@ $xpdo_meta_map['wxPresentation']= array (
       'null' => false,
       'default' => '',
     ),
+    'reg' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
     'primary' => 
     array (
       'dbtype' => 'tinyint',
@@ -93,6 +108,45 @@ $xpdo_meta_map['wxPresentation']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
+    ),
+    'parent' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+    ),
+    'grandparent' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+    ),
+    'firsttpl' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+    ),
+    'secondtpl' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+    ),
+    'thirdtpl' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+    ),
+    'tpls' => 
+    array (
+      'dbtype' => 'mediumtext',
+      'phptype' => 'json',
+      'null' => true,
     ),
     'trailer' => 
     array (
@@ -186,6 +240,38 @@ $xpdo_meta_map['wxPresentation']= array (
         ),
       ),
     ),
+    'parent' => 
+    array (
+      'alias' => 'parent',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'parent' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'grandparent' => 
+    array (
+      'alias' => 'grandparent',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'grandparent' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
   ),
   'composites' => 
   array (
@@ -200,6 +286,14 @@ $xpdo_meta_map['wxPresentation']= array (
     'Attachment' => 
     array (
       'class' => 'wxAttachment',
+      'local' => 'id',
+      'foreign' => 'presentation',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Referral' => 
+    array (
+      'class' => 'wxReferral',
       'local' => 'id',
       'foreign' => 'presentation',
       'cardinality' => 'many',
@@ -244,6 +338,22 @@ $xpdo_meta_map['wxPresentation']= array (
     array (
       'class' => 'wxWebinar',
       'local' => 'webinar',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'Parent' => 
+    array (
+      'class' => 'modResource',
+      'local' => 'parent',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'Grandparent' => 
+    array (
+      'class' => 'modResource',
+      'local' => 'grandparent',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',

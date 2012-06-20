@@ -5,7 +5,7 @@ Webinex.grid.Videos = function(config) {
         ,url: Webinex.config.connectorUrl
         ,baseParams: { action: 'mgr/video/getList' }
         ,save_action: 'mgr/video/updateFromGrid'
-        ,fields: ['id','title','url','imageurl','host','hostid','runtime','description']
+        ,fields: ['id','title','url','imageurl','host','hostid','runtime','description','recordedon']
         ,paging: true
         ,remoteSort: true
         ,autosave: true

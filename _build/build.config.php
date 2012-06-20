@@ -1,5 +1,5 @@
 <?php
-define('MODX_BASE_PATH', '/mnt/stor9-wc1-dfw1/627233/www.dealerwebinars.com/web/content/');
+define('MODX_BASE_PATH', '/my/base/path/');
 define('MODX_CORE_PATH', MODX_BASE_PATH . '../core/');
 define('MODX_MANAGER_PATH', MODX_BASE_PATH . 'manager/');
 define('MODX_CONNECTORS_PATH', MODX_BASE_PATH . 'connectors/');

@@ -2,7 +2,7 @@
 class PresenterGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'wxPresenter';
     public $languageTopics = array('webinex:default');
-    public $defaultSortField = 'firstname';
+    public $defaultSortField = 'lastname';
     public $defaultSortDirection = 'ASC';
     public $objectType = 'webinex.presenter';
     public function prepareQueryBeforeCount(xPDOQuery $c) {
@@ -16,6 +16,11 @@ class PresenterGetListProcessor extends modObjectGetListProcessor {
             ));
         }
         return $c;
+    }
+    public function prepareRow(xPDOObject $object) {
+    	$output = $object->toArray();
+    	$output['fullname'] = $output['firstname'] . ' ' . $output['lastname'];
+        return $output;
     }
 }
 return 'PresenterGetListProcessor';

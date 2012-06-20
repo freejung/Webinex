@@ -5,7 +5,7 @@ Webinex.grid.Presenters = function(config) {
         ,url: Webinex.config.connectorUrl
         ,baseParams: { action: 'mgr/presenter/getList' }
         ,save_action: 'mgr/presenter/updateFromGrid'
-        ,fields: ['id','firstname','lastname','title','company','email','phone','menu']
+        ,fields: ['id','sortorder','firstname','lastname','title','company','email','phone','longbio','shortbio','url','pic','linkedin','twitter']
         ,paging: true
         ,remoteSort: true
         ,autosave: true
@@ -180,28 +180,34 @@ Webinex.window.UpdatePresenter = function(config) {
                            ,hiddenName: 'company'
                            ,anchor: '100%'
                        },{
-					            xtype: 'modx-combo-browser'
-					            ,browserEl: 'modx-browser'
-					            ,prependPath: false
-					            ,prependUrl: false
-					            ,hideFiles: true
-					            ,fieldLabel: _('presenters.pic')
-					            ,name: 'pic'
-					            ,id: 'webinex-presenters-pic'
-					            ,maxLength: 255
-					            ,anchor: '100%'
-					            ,listeners: {
-					                'select':{fn:function(data) {
-					                    var str = data.fullRelativeUrl;
-					                    if (MODx.config.base_url != '/') {
-					                        str = str.replace(MODx.config.base_url,'');
-					                    }
-					                    if (str.substring(0,1) == '/') { str = str.substring(1); }
-					                    Ext.getCmp('webinex-presenters-pic').setValue(str);
-					                    this.markDirty();
-					                },scope:this}
-					            }
-					        },{
+				            xtype: 'modx-combo-browser'
+				            ,browserEl: 'modx-browser'
+				            ,prependPath: false
+				            ,prependUrl: false
+				            ,hideFiles: true
+				            ,fieldLabel: _('presenters.pic')
+				            ,name: 'pic'
+				            ,id: 'webinex-presenters-pic'
+				            ,maxLength: 255
+				            ,anchor: '100%'
+				            ,listeners: 
+				            {
+				                'select':
+				                {
+				                	fn:function(data) 
+				                	{
+				                    	var str = data.fullRelativeUrl;
+				                    	if (MODx.config.base_url != '/') {
+				                        	str = str.replace(MODx.config.base_url,'');
+				                    	}
+				                    	if (str.substring(0,1) == '/') { str = str.substring(1); }
+				                    Ext.getCmp('webinex-presenters-pic').setValue(str);
+				                    this.markDirty();
+				                	}
+				                	,scope:this
+				                }
+				            }
+				        },{
                            xtype: 'textarea'
                            ,fieldLabel: _('presenters.shortbio')
                            ,name: 'shortbio'
@@ -240,7 +246,7 @@ Webinex.window.UpdatePresenter = function(config) {
                        },{
                            xtype: 'textfield'
                            ,fieldLabel: _('presenters.url')
-                           ,name: 'pic'
+                           ,name: 'url'
                            ,anchor: '100%'
                        },{
                            xtype: 'textarea'

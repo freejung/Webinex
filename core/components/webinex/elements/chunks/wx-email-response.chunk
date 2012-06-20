@@ -1,0 +1,6 @@
+<p>Dear (firstname)</p>
+<p>
+Thanks for registering for the webinar [[+wbn.longtitle]] coming up on [[+eventdate]].
+</p>
+<p><a href="[[~[[++webinex.ical_resource_id]]? &scheme=`http`]]?ps=[[+id]]">Click here to add this webinar to your Outlook Calendar</a></p>
+<p>To join the webinar, go to <a href="[[+joinurl]]">[[+joinurl]]</a>

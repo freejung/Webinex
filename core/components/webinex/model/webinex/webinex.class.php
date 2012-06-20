@@ -19,7 +19,7 @@ class Webinex {
             'assetsUrl' => $assetsUrl,
             'connectorUrl' => $assetsUrl.'connector.php',
         ),$config);
-        $this->modx->addPackage('webinex',$this->config['modelPath']);
+        $this->modx->lexicon->load('webinex:default');
     }
     
     public function getChunk($name,$properties = array()) {

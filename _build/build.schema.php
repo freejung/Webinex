@@ -7,7 +7,7 @@ $modx->loadClass('transport.modPackageBuilder','',false, true);
 echo '<pre>'; /* used for nice formatting of log messages */
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget('ECHO');
- 
+
 $root = dirname(dirname(__FILE__)).'/';
 $sources = array(
     'model' => $root.'core/components/webinex/model/',

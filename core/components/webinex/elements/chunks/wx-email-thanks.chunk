@@ -1,0 +1,7 @@
+<p>Thank you for attending the <strong>[[+wbn.longtitle]]</strong> webinar. Please see below for links to watch the recorded webinar and download the presentation slides.</p>
+  <p>To download a copy of the <strong>presentation slides</strong>, go to:<br>
+    <a href="[[+slides]]">[[+slides]]</a></p>
+  <p>To view a <strong>recording</strong> of the webinar, go to:<br>
+    <a href="[[+rec.url]]">[[+rec.url]]</a></p>
+
+[[listDocuments? &presentation=`[[+id]]` &tpl=`wx-documents.tpl`]]

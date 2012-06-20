@@ -21,7 +21,7 @@ class PresenterCreateProcessor extends modObjectCreateProcessor {
     
 	 public function afterSave() {
         if($webinar = $this->modx->getObject('wxWebinar', $this->object->get('webinar'))) {
-        	   $presenter = $this->object;
+            $presenter = $this->object;
             $presentation = $webinar->primaryPresentation();
             $presentedBy = $this->modx->newObject('wxPresentedBy');
             $presentedBy->addOne($presenter);
@@ -29,7 +29,7 @@ class PresenterCreateProcessor extends modObjectCreateProcessor {
             $presentedByArray = array();
             $presentedByArray[0] = $presentedBy;
             $presentation->addMany($presentedByArray);
-            $webinar->save();
+            $presentation->save();
         }
         return parent::afterSave();
     }

@@ -1,0 +1,3 @@
+<div class="presenter-short float-right" itemprop="performers" itemscope itemtype="http://schema.org/Person">
+ [[+pic:notempty=`<img alt="[[+firstname]] [[+lastname]]" src="http://www.kpaonline.com[[+pic:phpthumbof=`w=80&h=80`]]" />`]]<span class="presenter-caption"><span class="presenter-label">Presenter:</span> <span itemprop="givenName">[[+firstname]]</span> <span itemprop="familyName">[[+lastname]]</span></span>
+</div>

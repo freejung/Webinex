@@ -10,7 +10,14 @@
         <field key="dialin" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="accesscode" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="eventtype" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="reg" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="primary" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="parent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
+        <field key="grandparent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
+        <field key="firsttpl" dbtype="text" phptype="string"/>
+        <field key="secondtpl" dbtype="text" phptype="string"/>
+        <field key="thirdtpl" dbtype="text" phptype="string"/>
+        <field key="tpls" dbtype="mediumtext" phptype="json" null="true"/>
         <field key="trailer" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
         <field key="recording" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
         <field key="webinar" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
@@ -23,13 +30,22 @@
         <aggregate alias="Trailer" class="vxVideo" local="trailer" foreign="id" cardinality="one" owner="foreign"/>
         <aggregate alias="Recording" class="vxVideo" local="recording" foreign="id" cardinality="one" owner="foreign"/>
         <aggregate alias="Webinar" class="wxWebinar" local="webinar" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Parent" class="modResource" local="parent" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="Grandparent" class="modResource" local="grandparent" foreign="id" cardinality="one" owner="foreign"/>
         <composite alias="PresentedBy" class="wxPresentedBy" local="id" foreign="presentation" cardinality="many" owner="local" />
         <composite alias="Attachment" class="wxAttachment" local="id" foreign="presentation" cardinality="many" owner="local" />
+        <composite alias="Referral" class="wxReferral" local="id" foreign="presentation" cardinality="many" owner="local" />
         <index alias="eventdate" name="eventdate" primary="false" unique="false" type="BTREE">
             <column key="eventdate" length="" collation="A" null="false" />
         </index>
         <index alias="webinar" name="webinar" primary="false" unique="false" type="BTREE">
             <column key="webinar" length="" collation="A" null="false" />
+        </index>
+        <index alias="parent" name="parent" primary="false" unique="false" type="BTREE">
+            <column key="parent" length="" collation="A" null="false" />
+        </index>
+        <index alias="grandparent" name="grandparent" primary="false" unique="false" type="BTREE">
+            <column key="grandparent" length="" collation="A" null="false" />
         </index>
     </object>
     
@@ -79,22 +95,6 @@
         </index>
     </object>
     
-    <object class="wxAffiliate" table="wx_affiliates" extends="xPDOSimpleObject">
-        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
-        <field key="logo" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
-        <field key="description" dbtype="text" phptype="string" null="false" default=""/>
-        <field key="notes" dbtype="text" phptype="string" null="false" default=""/>
-        <field key="code" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
-        <field key="state" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
-        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
-        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
-        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
-        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
-        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
-        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
-        <composite alias="Endorsement" class="wxEndorsement" local="id" foreign="document" cardinality="many" owner="local" />
-    </object>
-    
     <object class="wxDocument" table="wx_documents" extends="xPDOSimpleObject">
         <field key="title" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
         <field key="url" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
@@ -132,10 +132,6 @@
         </index>
     </object>
     
-    <object class="wxWebinar" extends="modResource">
-        <composite alias="Presentation" class="wxPresentation" local="id" foreign="webinar" cardinality="many" owner="local" />
-    </object>
-    
     <object class="wxPresentedBy" table="wx_presentedby" extends="xPDOSimpleObject">
         <field key="presentation" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="presenter" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
@@ -162,6 +158,23 @@
         </index>
     </object>
     
+    <object class="wxAffiliate" table="wx_affiliates" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="logo" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="description" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="notes" dbtype="text" phptype="string" null="false" default=""/>
+        <field key="code" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="state" dbtype="varchar" precision="255" phptype="string" null="false" default=""/>
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="createdby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="editedon" dbtype="datetime" phptype="datetime" null="true"/>
+        <field key="editedby" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <aggregate alias="CreatedBy" class="modUser" local="createdby" foreign="id" cardinality="one" owner="foreign"/>
+        <aggregate alias="EditedBy" class="modUser" local="editedby" foreign="id" cardinality="one" owner="foreign"/>
+        <composite alias="Endorsement" class="wxEndorsement" local="id" foreign="affiliate" cardinality="many" owner="local" />
+        <composite alias="Referral" class="wxReferral" local="id" foreign="affiliate" cardinality="many" owner="local" />
+    </object>
+    
     <object class="wxEndorsement" table="wx_endorsements" extends="xPDOSimpleObject">
         <field key="affiliate" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="category" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
@@ -173,5 +186,55 @@
         <index alias="category" name="category" primary="false" unique="false" type="BTREE">
             <column key="category" length="" collation="A" null="false" />
         </index>
+    </object>
+    
+    <object class="wxReferral" table="wx_referrals" extends="xPDOSimpleObject">
+	    <field key="prospect" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true"/>
+        <field key="entry" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0"/>
+    	<field key="affiliate" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <aggregate alias="Affiliate" class="wxAffiliate" local="affiliate" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Entry" class="modResource" local="entry" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Prospect" class="wxProspect" local="prospect" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Registration" class="wxRegistration" local="id" foreign="referral" cardinality="many" owner="local" />
+        <index alias="affiliate" name="affiliate" primary="false" unique="false" type="BTREE">
+            <column key="affiliate" length="" collation="A" null="false" />
+        </index>
+        <index alias="entry" name="entry" primary="false" unique="false" type="BTREE">
+            <column key="entry" length="" collation="A" null="false" />
+        </index>
+        <index alias="prospect" name="prospect" primary="false" unique="false" type="BTREE">
+            <column key="prospect" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxRegistration" table="wx_registrations" extends="xPDOSimpleObject">
+	    <field key="prospect" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="presentation" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+    	<field key="referral" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
+        <field key="attended" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="viewedrecording" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
+        <aggregate alias="Referral" class="wxReferral" local="referral" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Prospect" class="wxProspect" local="prospect" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Presentation" class="wxPresentation" local="presentation" foreign="id" cardinality="one" owner="foreign" />
+        <index alias="referral" name="referral" primary="false" unique="false" type="BTREE">
+            <column key="referral" length="" collation="A" null="false" />
+        </index>
+        <index alias="presentation" name="presentation" primary="false" unique="false" type="BTREE">
+            <column key="presentation" length="" collation="A" null="false" />
+        </index>
+        <index alias="prospect" name="prospect" primary="false" unique="false" type="BTREE">
+            <column key="prospect" length="" collation="A" null="false" />
+        </index>
+    </object>
+    
+    <object class="wxWebinar" extends="modResource">
+        <composite alias="Presentation" class="wxPresentation" local="id" foreign="webinar" cardinality="many" owner="local" />
+    </object>
+    
+    <object class="wxProspect" table="users" extends="modUser">
+        <composite alias="Referral" class="wxReferral" local="id" foreign="prospect" cardinality="many" owner="local" />
+        <composite alias="Registration" class="wxRegistration" local="id" foreign="prospect" cardinality="many" owner="local" />
     </object>
 </model>

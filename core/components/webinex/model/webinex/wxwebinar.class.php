@@ -25,72 +25,90 @@ class wxWebinar extends modResource {
       return $this->xpdo->lexicon('webinar');
     }
     
-    public function primaryPresentation() {
-        $presentations = $this->getMany('Presentation');
-        $i = 0;
-        $latestPresentation = null;
-        foreach($presentations as $presentation) {
-          if($presentation->get('primary') == 1) {
-              if ($i == 0) {
-                  $latestPresentation = $presentation;
-              }else{
-                  if($latestPresentation->get('eventdate') <= $presentation->get('eventdate')) {
-                  	$latestPresentation->set('primary',0);
-                  	$latestPresentation->save();
-                  	$latestPresentation = $presentation;
-                  }else{
-                  	$presentation->set('primary',0);
-                  	$presentation->save();
-                  }
-              }
-              $i++;
-          }
+    public function save($cacheFlag= null) {
+        $rt= parent :: save($cacheFlag);
+        if($parent = $this->getOne('Parent')){
+            $allPresentations = $this->getMany('Presentation');
+            foreach($allPresentations as $presentation) {
+               $presentation->addOne($parent,'Parent');
+               if($grandparent = $parent->getOne('Parent')){
+                   $presentation->addOne($grandparent,'Grandparent');
+               }
+               $presentation->save();
+            }
         }
-        if($i == 0) {
+        return $rt;
+    }
+    
+    public function primaryPresentation() {
+        $latestPresentation = NULL;
+        if ($presentations = $this->getMany('Presentation')) {
+            $i = 0;    
             foreach($presentations as $presentation) {
+              if($presentation->get('primary') == 1) {
                   if ($i == 0) {
                       $latestPresentation = $presentation;
                   }else{
                       if($latestPresentation->get('eventdate') <= $presentation->get('eventdate')) {
-                      	$latestPresentation->set('primary',0);
-                      	$latestPresentation->save();
-                      	$latestPresentation = $presentation;
+                          $latestPresentation->set('primary',0);
+                          $latestPresentation->save();
+                          $latestPresentation = $presentation;
                       }else{
-                      	$presentation->set('primary',0);
-                      	$presentation->save();
+                          $presentation->set('primary',0);
+                          $presentation->save();
                       }
                   }
                   $i++;
+               }
             }
-            $latestPresentation->set('primary',1);
-            $latestPresentation->save();
+            if($i == 0) {
+                foreach($presentations as $presentation) {
+                    if ($i == 0) {
+                          $latestPresentation = $presentation;
+                      }else{
+                          if($latestPresentation->get('eventdate') <= $presentation->get('eventdate')) {
+                          	$latestPresentation->set('primary',0);
+                          	$latestPresentation->save();
+                          	$latestPresentation = $presentation;
+                          }else{
+                          	$presentation->set('primary',0);
+                          	$presentation->save();
+                          }
+                      }
+                      $i++;
+                }
+                $latestPresentation->set('primary',1);
+                $latestPresentation->save();
+            }
         }
         return $latestPresentation;
     }
     
     public function setPrimaryPresentation($newPrimaryId){
-      $presentations = $this->getMany('Presentation');
-      $oldPrimaryId = 0;
-      $isNewPrimary = 0;
-      foreach($presentations as $presentation) {
-          if($presentation->get('primary') == 1) {
-              $presentation->set('primary',0);
-              $presentation->save();
-              $oldPrimaryId = $presentation->get('id');
-          }
-          if($presentation->get('id') == $newPrimaryId) {
-              $presentation->set('primary',1);
-              $presentation->save();
-              $isNewPrimary = 1;
-          }
-      }
-      if($isNewPrimary) {
-          return 1;
-      }else{
-          $oldPrimary = getObject('wxPresentation', $oldPrimaryId);
-          $oldPrimary->set('primary', 1);
-          return null;
-      }
+        if($presentations = $this->getMany('Presentation')) {
+            $oldPrimaryId = 0;
+            $isNewPrimary = 0;
+            foreach($presentations as $presentation) {
+                if($presentation->get('primary') == 1) {
+                    $presentation->set('primary',0);
+                    $presentation->save();
+                    $oldPrimaryId = $presentation->get('id');
+                }
+                if($presentation->get('id') == $newPrimaryId) {
+                    $presentation->set('primary',1);
+                    $presentation->save();
+                    $isNewPrimary = 1;
+                }
+            }
+            if($isNewPrimary) {
+                return 1;
+            }else{
+                $oldPrimary = getObject('wxPresentation', $oldPrimaryId);
+                $oldPrimary->set('primary', 1);
+                return NULL;
+            }
+        }
+        return NULL;
     }
 }
 
@@ -113,7 +131,7 @@ class wxWebinarCreateProcessor extends modResourceCreateProcessor {
             return null;
         }
         if($primaryPresentation = $this->object->primaryPresentation()) { 
-            $primaryPresentation->fromArray($this->properties);   
+            $primaryPresentation->fromArray($this->properties);
         }
         return $beforeSave;
     }
@@ -133,7 +151,7 @@ class wxWebinarCreateProcessor extends modResourceCreateProcessor {
                      $i++;
                  }
                  $primaryPresentation->addMany($presentedByArray);
-                 $saving = $primaryPresentation->save();
+                 $primaryPresentation->save();
             }
             $documentIds = array_filter($this->object->get('document'));
             if(!empty($documentIds)) {

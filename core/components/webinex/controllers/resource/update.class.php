@@ -18,6 +18,7 @@ class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
         $this->addJavascript($managerUrl.'assets/modext/widgets/resource/modx.panel.resource.js');
         $this->addJavascript($managerUrl.'assets/modext/sections/resource/update.js');
         $this->addJavascript($this->modx->getOption('webinex.assets_url','null',$this->modx->getOption('assets_url','null','/assets/').'components/webinex/').'js/mgr/webinex.js');
+        $this->addJavascript($this->modx->getOption('webinex.assets_url','null',$this->modx->getOption('assets_url','null','/assets/').'components/webinex/').'js/mgr/widgets/registrations.grid.js');
         $this->addJavascript($this->modx->getOption('webinex.assets_url','null',$this->modx->getOption('assets_url','null','/assets/').'components/webinex/').'js/mgr/resource/update.js');
 
         $fullResourceArray = array();
@@ -28,30 +29,34 @@ class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
             $primaryPresentationArray['presentation'] = $primaryPresentationId;
             $presentedByArray = $primaryPresentation->getMany('PresentedBy');
             if(!empty($presentedByArray)) {
-                $presenterNames = array();
-                $i = 0;
+                $presenterIds = array();
                 foreach($presentedByArray as $presentedBy) {
                 	  $thisPresenter = $presentedBy->getOne('Presenter');
-                    $presenterNames[$i] = $thisPresenter->get('firstname').' '.$thisPresenter->get('lastname');
-                    $i++;
+                    $presenterIds[] = $thisPresenter->get('id');
                 }
-                $presenterString = implode(', ', $presenterNames);
+                $presenterString = implode(',', $presenterIds);
                 $primaryPresentationArray['presenter'] = $presenterString;
             }
             $attachmentArray = $primaryPresentation->getMany('Attachment');
             if(!empty($attachmentArray)) {
-                $documentNames = array();
-                $i = 0;
+                $documentIds = array();
                 foreach($attachmentArray as $attachment) {
                 	  $thisDocument = $attachment->getOne('Document');
-                    $documentNames[$i] = $thisDocument->get('title');
-                    $i++;
+                    $documentIds[] = $thisDocument->get('id');
                 }
-                $documentString = implode(', ', $documentNames);
+                $documentString = implode(',', $documentIds);
                 $primaryPresentationArray['document'] = $documentString;
             }
         } 
         $fullResourceArray = array_merge($primaryPresentationArray, $this->resourceArray);
+        
+        $emailTemplatesArray = array();
+        $emailTemplatesCategory = $this->modx->getObject('modCategory', array('category' => $this->modx->getOption('webinex.email_templates_category','null','Webinex Email Templates')));
+        $emailTemplates = $this->modx->getCollection('modChunk',array('category' => $emailTemplatesCategory->id));
+        foreach($emailTemplates as $emailTemplate) {
+        	$emailTemplatesArray[] = array($emailTemplate->name, $emailTemplate->description ? $emailTemplate->description : $emailTemplate->name );
+        }
+        $fullResourceArray['emailTemplates'] = $emailTemplatesArray;
            
         $this->addHtml('
         <!-- load custom resource update class  -->

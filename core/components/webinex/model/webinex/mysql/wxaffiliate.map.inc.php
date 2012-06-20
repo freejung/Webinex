@@ -102,7 +102,15 @@ $xpdo_meta_map['wxAffiliate']= array (
     array (
       'class' => 'wxEndorsement',
       'local' => 'id',
-      'foreign' => 'document',
+      'foreign' => 'affiliate',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Referral' => 
+    array (
+      'class' => 'wxReferral',
+      'local' => 'id',
+      'foreign' => 'affiliate',
       'cardinality' => 'many',
       'owner' => 'local',
     ),
