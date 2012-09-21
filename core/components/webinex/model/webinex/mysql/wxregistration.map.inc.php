@@ -1,13 +1,4 @@
 <?php
-/**
- * Webinex
- *
- * Copyright 2012 by Eli Snyder <freejung@gmail.com>
- */
-/**
- * @package webinex
- * @subpackage model
- */
 $xpdo_meta_map['wxRegistration']= array (
   'package' => 'webinex',
   'version' => '1.1',
@@ -20,6 +11,7 @@ $xpdo_meta_map['wxRegistration']= array (
     'referral' => NULL,
     'attended' => 0,
     'viewedrecording' => 0,
+    'reg' => '',
     'createdon' => NULL,
   ),
   'fieldMeta' => 
@@ -52,8 +44,8 @@ $xpdo_meta_map['wxRegistration']= array (
     ),
     'attended' => 
     array (
-      'dbtype' => 'tinyint',
-      'precision' => '1',
+      'dbtype' => 'int',
+      'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
       'null' => false,
@@ -67,6 +59,14 @@ $xpdo_meta_map['wxRegistration']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
+    ),
+    'reg' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '1023',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
     'createdon' => 
     array (

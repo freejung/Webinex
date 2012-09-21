@@ -22,7 +22,14 @@ if (!($webinex instanceof Webinex)) {
 				if($this->properties['affiliate'] && $affiliate = $modx->getObject('wxAffiliate',$this->properties['affiliate'])) {
 				    $affiliateArray = $affiliate->toArray('aff.');
 				}else{
-                                    $affiliateArray = array('aff.code' => '');
+                                    $affiliateArray = array(
+                                        'aff.code' => '',
+                                        'aff.logo' => '',
+                                        'aff.state' => '',
+                                        'aff.name' => '',
+                                        'aff.description' => '',
+                                        'aff.notes' => ''
+                                    );
                                 }
 			}
 			if(array_key_exists('email', $this->properties)) {

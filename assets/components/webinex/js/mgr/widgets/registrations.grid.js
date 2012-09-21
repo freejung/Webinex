@@ -7,7 +7,7 @@ Webinex.grid.Registrations = function(config) {
             ,presentation: config.presentation
             ,all: 0
         }
-        ,fields: ['id','fullname','email','state','referrer','createdon']
+        ,fields: ['id','fullname','Company','Title','email','phone','state','referrer','attended','createdon']
         ,paging: true
         ,pageSize: 1000
         ,grouping: true
@@ -30,8 +30,23 @@ Webinex.grid.Registrations = function(config) {
             ,sortable: true
             ,width: 300
         },{
+            header: _('prospect.Company')
+            ,dataIndex: 'Company'
+            ,sortable: true
+            ,width: 350
+        },{
+            header: _('prospect.Title')
+            ,dataIndex: 'Title'
+            ,sortable: true
+            ,width: 350
+        },{
             header: _('prospect.email')
             ,dataIndex: 'email'
+            ,sortable: true
+            ,width: 350
+        },{
+            header: _('prospect.phone')
+            ,dataIndex: 'phone'
             ,sortable: true
             ,width: 350
         },{
@@ -44,12 +59,12 @@ Webinex.grid.Registrations = function(config) {
             ,dataIndex: 'referrer'
             ,sortable: true
             ,width: 250
-        },/*{
+        },{
             header: _('registration.attended')
             ,dataIndex: 'attended'
             ,sortable: true
             ,width: 180
-        },{
+        },/*{
             header: _('registration.viewedrecording')
             ,dataIndex: 'viewedrecording'
             ,sortable: true

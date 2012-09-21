@@ -46,9 +46,9 @@ $whereArray = $modx->fromJSON($where);
 $cArray = array();
 
 if($presentation) {
-    $pidArray = array();
+    $docArray = array();
     if($presentationObj = $modx->getObject('wxPresentation', $presentation)) {
-        $attachmentArray = $presentationObj->getMany('Attachment');   
+        if(!$attachmentArray = $presentationObj->getMany('Attachment')) return '';   
         foreach ($attachmentArray as $attachment) {
             $document = $attachment->getOne('Document');
             $docArray[] = $document->get('id');

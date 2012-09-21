@@ -69,14 +69,12 @@ foreach ($presentations as $presentation) {
     $thisWebinarId = $webinar->get('id');
     /*return the soonest presentation, and only published webinars*/
     if($webinar->get('published')){
-        $presentationArray = $presentation->toArray();
+        $presentationArray = $presentation->toFullArray();
         $eventdate = $presentationArray['eventdate'];
         $presentationArray['eventdate'] = date($dateFormat, strtotime($eventdate));
         $presentationArray['starttime'] = date($timeFormat, strtotime($eventdate));
         $presentationArray['start-date-time'] = $eventdate;
-        $webinarArray = $webinar->toArray('wbn.');
-        
-        $output .= $modx->getChunk($tpl,array_merge($presentationArray,$webinarArray));
+        $output .= $modx->getChunk($tpl,$presentationArray);
     }
 }
  

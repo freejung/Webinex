@@ -32,6 +32,8 @@ class RegistrationGetListProcessor extends modObjectGetListProcessor {
         if($prospect = $object->getOne('Prospect')) {
             if($profile = $prospect->getOne('Profile')) {
                 $profileArray = $profile->toArray();
+                $extendedFields = $profile->get('extended');
+                $profileArray = array_merge($extendedFields, $profileArray);
             }
         }
         $referrer = array();

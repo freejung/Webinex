@@ -35,6 +35,7 @@ $sort = $modx->getOption('sort',$scriptProperties,'eventdate');
 $dir = $modx->getOption('dir',$scriptProperties,'ASC');
 $parents = $modx->getOption('parents',$scriptProperties,'');
 $grandparents = $modx->getOption('grandparents',$scriptProperties,'');
+$include = $modx->getOption('include',$scriptProperties,'');
 $limit = $modx->getOption('limit',$scriptProperties,0);
 $offset = $modx->getOption('offset',$scriptProperties,0);
 $timeshift = $modx->getOption('timeshift',$scriptProperties,1800);
@@ -60,6 +61,11 @@ if($parents != '') {
 if($grandparents != '') {
     $grandparentsArray = explode(',',$grandparents);
     $whereArray['grandparent:IN'] = $grandparentsArray;
+}
+
+if($include != '') {
+    $includeArray = explode(',',$include);
+    $whereArray['webinar:IN'] = $includeArray;
 }
 
 $c->where($whereArray);
