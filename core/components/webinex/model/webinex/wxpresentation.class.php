@@ -11,11 +11,42 @@
 class wxPresentation extends xPDOSimpleObject {
 
     /* toFullArray returns an array of the presentation and related objects */
-    public function toFullArray() {
+    /*
+    * @param int $includeTVs
+    * @param array $includeTVList
+    * @param int $processTVs
+    * @param array $processTVList
+    * @param int $prepareTVs
+    * @param array $prepareTVList
+    * @param string $tvPrefix
+    */
+    public function toFullArray($includeTVs = false, $includeTVList = array(), $processTVs = false, $processTVList = array(), $prepareTVs = false, $prepareTVList = array(), $tvPrefix = 'tv.') {
         $presentationArray = $this->toArray();
         $webinarArray = array();
+        $tvs = array();
+        $templateVars = array();
+        if (!empty($includeTVs) && !empty($includeTVList)) {
+            $templateVars = $modx->getCollection('modTemplateVar', array('name:IN' => $includeTVList));
+        }
         if($webinar = $this->getOne('Webinar')) {
             $webinarArray = $webinar->toArray('wbn.');
+            if (!empty($includeTVs)) {
+                if (empty($includeTVList)) {
+                    $templateVars = $webinar->getMany('TemplateVars');
+                }
+                foreach ($templateVars as $tvId => $templateVar) {
+                    if (!empty($includeTVList) && !in_array($templateVar->get('name'), $includeTVList)) continue;
+                    if ($processTVs && (empty($processTVList) || in_array($templateVar->get('name'), $processTVList))) {
+                        $tvs[$tvPrefix . $templateVar->get('name')] = $templateVar->renderOutput($webinar->get('id'));
+                    } else {
+                        $value = $templateVar->getValue($webinar->get('id'));
+                        if ($prepareTVs && method_exists($templateVar, 'prepareOutput') && (empty($prepareTVList) || in_array($templateVar->get('name'), $prepareTVList))) {
+                            $value = $templateVar->prepareOutput($value);
+                        }
+                        $tvs[$tvPrefix . $templateVar->get('name')] = $value;
+                    }
+                }
+            }
         }
         $recordingArray = array();
         if($recording = $this->getOne('Recording')) {
@@ -25,7 +56,7 @@ class wxPresentation extends xPDOSimpleObject {
         if($trailer = $this->getOne('Trailer')) {
             $trailerArray = $trailer->toArray('tr.');
         }
-        return array_merge($webinarArray, $presentationArray, $recordingArray, $trailerArray);
+        return array_merge($webinarArray, $presentationArray, $recordingArray, $trailerArray, $tvs);
     }
 
     /* setTemplates processes and stores the three default presentation templates */
@@ -38,7 +69,7 @@ class wxPresentation extends xPDOSimpleObject {
                 if($modx2 = new modX()) {
                     $modx2->initialize($webinar->get('context_key'));
                     $modx2->getService('error','error.modError');
-                    $fullArray = $this->toFullArray();
+                    $fullArray = $this->toFullArray(true, array(), true, array(), true, array());
                     $this->set('firsttpl', $modx2->getChunk($firstTpl, $fullArray));
                     $this->set('secondtpl', $modx2->getChunk($secondTpl, $fullArray));
                     $this->set('thirdtpl', $modx2->getChunk($thirdTpl, $fullArray));

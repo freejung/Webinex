@@ -41,6 +41,13 @@ $offset = $modx->getOption('offset',$scriptProperties,0);
 $timeshift = $modx->getOption('timeshift',$scriptProperties,1800);
 $recorded = $modx->getOption('recorded',$scriptProperties,0);
 $upcoming = $modx->getOption('upcoming',$scriptProperties,1);
+$includeTVs = $modx->getOption('includeTVs',$scriptProperties,false);
+$includeTVList = $modx->getOption('includeTVList',$scriptProperties,array());
+$processTVs = $modx->getOption('processTVs',$scriptProperties,false);
+$processTVList = $modx->getOption('processTVList',$scriptProperties,array());
+$prepareTVs = $modx->getOption('prepareTVs',$scriptProperties,false);
+$prepareTVList = $modx->getOption('prepareTVList',$scriptProperties,array());
+$tvPrefix = $modx->getOption('tvPrefix',$scriptProperties,'tv.');
 
 $c = $modx->newQuery('wxPresentation');
 $c->sortby($sort,$dir);
@@ -78,7 +85,7 @@ foreach ($presentations as $presentation) {
     if($tpl == 'firsttpl' || $tpl == 'secondtpl' || $tpl == 'thirdtpl') {
         $output .= $presentation->get($tpl);
     }else{
-        $presentationArray = $presentation->toFullArray();
+        $presentationArray = $presentation->toFullArray($includeTVs, $includeTVList, $processTVs, $processTVList, $prepareTVs, $prepareTVList, $tvPrefix);
         $output .= $modx->getChunk($tpl, $presentationArray);
     }
 }
