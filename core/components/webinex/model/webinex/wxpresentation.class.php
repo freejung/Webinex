@@ -26,7 +26,7 @@ class wxPresentation extends xPDOSimpleObject {
         $tvs = array();
         $templateVars = array();
         if (!empty($includeTVs) && !empty($includeTVList)) {
-            $templateVars = $modx->getCollection('modTemplateVar', array('name:IN' => $includeTVList));
+            $templateVars = $this->xpdo->getCollection('modTemplateVar', array('name:IN' => $includeTVList));
         }
         if($webinar = $this->getOne('Webinar')) {
             $webinarArray = $webinar->toArray('wbn.');

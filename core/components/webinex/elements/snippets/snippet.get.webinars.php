@@ -42,12 +42,16 @@ $timeshift = $modx->getOption('timeshift',$scriptProperties,1800);
 $recorded = $modx->getOption('recorded',$scriptProperties,0);
 $upcoming = $modx->getOption('upcoming',$scriptProperties,1);
 $includeTVs = $modx->getOption('includeTVs',$scriptProperties,false);
-$includeTVList = $modx->getOption('includeTVList',$scriptProperties,array());
+$includeTVList = $modx->getOption('includeTVList',$scriptProperties,'');
 $processTVs = $modx->getOption('processTVs',$scriptProperties,false);
-$processTVList = $modx->getOption('processTVList',$scriptProperties,array());
+$processTVList = $modx->getOption('processTVList',$scriptProperties,'');
 $prepareTVs = $modx->getOption('prepareTVs',$scriptProperties,false);
-$prepareTVList = $modx->getOption('prepareTVList',$scriptProperties,array());
+$prepareTVList = $modx->getOption('prepareTVList',$scriptProperties,'');
 $tvPrefix = $modx->getOption('tvPrefix',$scriptProperties,'tv.');
+
+$includeTVList = !empty($includeTVList) ? explode(',', $includeTVList) : array();
+$processTVList = !empty($processTVList) ? explode(',', $processTVList) : array();
+$prepareTVList = !empty($prepareTVList) ? explode(',', $prepareTVList) : array();
 
 $c = $modx->newQuery('wxPresentation');
 $c->sortby($sort,$dir);
