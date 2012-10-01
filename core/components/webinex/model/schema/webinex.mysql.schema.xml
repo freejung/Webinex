@@ -212,9 +212,8 @@
 	    <field key="prospect" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="presentation" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
     	<field key="referral" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="true" />
-        <field key="attended" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="attended" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="viewedrecording" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
-        <field key="reg" dbtype="varchar" precision="1023" phptype="string" null="false" default=""/>
         <field key="createdon" dbtype="datetime" phptype="datetime" null="true"/>
         <aggregate alias="Referral" class="wxReferral" local="referral" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Prospect" class="wxProspect" local="prospect" foreign="id" cardinality="one" owner="foreign" />

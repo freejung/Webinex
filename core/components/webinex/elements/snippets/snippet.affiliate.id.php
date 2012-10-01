@@ -20,39 +20,25 @@
  * @package webinex
  */
 /**
- * Affiliate ID snippet - handles affiliate referrals and also webinar join redirects
+ * Affiliate ID snippet
  * @package webinex
  * @subpackage snippets
  */
- 
-$webinex = $modx->getService('webinex','Webinex',$modx->getOption('webinex.core_path',null,$modx->getOption('core_path').'components/webinex/').'model/webinex/',$scriptProperties);
-if (!($webinex instanceof Webinex)) return 'Error: could not instantiate Webinex';
- 
-$affiliateCode = 0;
-$join = 0;
-$email = '';
-
-if(filter_has_var(INPUT_GET, 'ai')){
-  if (filter_input(INPUT_GET, 'ai', FILTER_VALIDATE_INT)){
+if(!filter_has_var(INPUT_GET, 'ai')){
+  return '';
+}else{
+  if (!filter_input(INPUT_GET, "ai", FILTER_VALIDATE_INT)){
+     return '';
+  }else{
     $affiliateCode = $_GET['ai'];
   }
 }
 
-if(filter_has_var(INPUT_GET, 'jn')){
-    if(filter_input(INPUT_GET, 'jn', FILTER_VALIDATE_INT)) {
-        $join = $_GET['jn'];
-    }
-}
-
-if(filter_has_var(INPUT_GET, 'em')){
-    if(filter_input(INPUT_GET, 'em', FILTER_VALIDATE_EMAIL)) {
-        $email = $_GET['em'];
-    }
-}
-
+$affiliates = $modx->getCollection('wxAffiliate');
 $resource = $modx->resource;
-if($affiliateCode){
-    if($affiliate = $modx->getObject('wxAffiliate', array('code' => $affiliateCode))){
+
+foreach ($affiliates as $affiliate) {
+    if($affiliate->get('code') == $affiliateCode) {
         $referral = $modx->newObject('wxReferral');
         $referral->addOne($affiliate);
         $referral->set('entry',$resource->id);
@@ -72,41 +58,4 @@ if($affiliateCode){
         $modx->setPlaceholder('wx-referral-id', $referral->id);      
     }
 }
-
-if($join) {
-    //echo('join true<br>');
-    if($webinar = $modx->getObject('wxWebinar', $resource->id)) {
-        if($presentation = $webinar->primaryPresentation()) {
-            if($presentation->get('recording')) return '';
-            if($email) {
-                if($prospect = $modx->getObject('wxProspect', array('username' => $email))) {
-                    //echo('<br><br>prospect id ='.$prospect->get('id'));
-                    $c = $modx->newQuery('wxRegistration');
-                    
-                    //echo('<br>presentation id='.$presentation->get('id'));
-                    $whereArray = array('prospect' => $prospect->get('id'), 'presentation' => $presentation->get('id'));
-                    $c->where($whereArray);
-                    if($registrations = $modx->getCollection('wxRegistration', $c)) {
-                        $joinUrl = '';
-                        foreach($registrations as $registration) {
-                            $reg = $registration->get('reg');
-                            if(!empty($reg)){
-                                $joinUrl = $registration->get('reg');
-                            }
-                        }
-                        if(!empty($joinUrl)) {
-                            //echo($joinUrl);
-                            $modx->sendRedirect($joinUrl);
-                        }
-                    }
-                }
-            }
-            if($joinUrl = $presentation->get('joinurl')) {
-                //echo('default join url='.$joinUrl);
-                $modx->sendRedirect($joinUrl);
-            }
-        }
-    }
-}
-
-return '';
+return'';
