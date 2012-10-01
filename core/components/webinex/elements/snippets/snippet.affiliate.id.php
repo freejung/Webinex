@@ -34,11 +34,9 @@ if(!filter_has_var(INPUT_GET, 'ai')){
   }
 }
 
-$affiliates = $modx->getCollection('wxAffiliate');
 $resource = $modx->resource;
-
-foreach ($affiliates as $affiliate) {
-    if($affiliate->get('code') == $affiliateCode) {
+if($affiliateCode){
+    if($affiliate = $modx->getObject('wxAffiliate', array('code' => $affiliateCode))){
         $referral = $modx->newObject('wxReferral');
         $referral->addOne($affiliate);
         $referral->set('entry',$resource->id);
@@ -58,4 +56,4 @@ foreach ($affiliates as $affiliate) {
         $modx->setPlaceholder('wx-referral-id', $referral->id);      
     }
 }
-return'';
+return '';
