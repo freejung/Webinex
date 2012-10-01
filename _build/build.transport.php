@@ -7,7 +7,7 @@ set_time_limit(0);
 /* define package names */
 define('PKG_NAME','Webinex');
 define('PKG_NAME_LOWER','webinex');
-define('PKG_VERSION','0.3.0');
+define('PKG_VERSION','0.4.0');
 define('PKG_RELEASE','beta');
  
 /* define build paths */

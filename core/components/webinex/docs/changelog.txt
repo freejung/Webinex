@@ -1,4 +1,13 @@
 
+Webinex 0.4.0
+========================
+- Added support for template variables in Webinars using code from getResources
+- Added listAffiliates snippet
+- Added localTime snippet
+- Removed borders on presenter window form
+- Added columns to registration list
+- Fixed bug where prospect user profile was saving before user
+
 Webinex 0.3.0
 ========================
 - various bug fixes, template and interface refinements
