@@ -19,9 +19,6 @@ class wxProspect extends modUser {
     	if ($this->xpdo instanceof modX) {
 	    	$this->set('username',$email);
 		    $this->set('password',$this->generatePassword());
-		    $profile = $this->xpdo->newObject('modUserProfile');
-		    $profile->set('email',$email);
-		    $this->addOne($profile);
 		    $this->xpdo->user = $this;
 		    $this->addSessionContext($this->xpdo->context->key);
 		    $group = $this->xpdo->getOption('webinex.default_prospect_group',null,0);
@@ -29,6 +26,10 @@ class wxProspect extends modUser {
 		    if($group) {
 		    	$this->joinGroup($group);
 		    }
+		    $profile = $this->xpdo->newObject('modUserProfile');
+		    $profile->set('email',$email);
+		    $this->addOne($profile);
+		    $this->save();
 	    }
     }
 }
