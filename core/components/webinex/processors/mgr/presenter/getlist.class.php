@@ -27,8 +27,8 @@ class PresenterGetListProcessor extends modObjectGetListProcessor {
         return $c;
     }
     public function prepareRow(xPDOObject $object) {
-    	$output = $object->toArray();
-    	$output['fullname'] = $output['firstname'] . ' ' . $output['lastname'];
+        $output = $object->toArray();
+        $output['fullname'] = $output['firstname'] . ' ' . $output['lastname'];
         return $output;
     }
 }

@@ -26,7 +26,7 @@
  */
 require_once dirname(__FILE__) . '/../../model/webinex/webinex.class.php';
 class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
-	 public $webinex;
+     public $webinex;
     public function initialize() {
         $this->webinex = new Webinex($this->modx);
         return parent::initialize();
@@ -49,14 +49,14 @@ class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
         $fullResourceArray = array();
         $primaryPresentationArray = array();
         if($primaryPresentation = $this->resource->primaryPresentation()){
-        	   $primaryPresentationId = $primaryPresentation->get('id');
+               $primaryPresentationId = $primaryPresentation->get('id');
             $primaryPresentationArray = $primaryPresentation->toArray();
             $primaryPresentationArray['presentation'] = $primaryPresentationId;
             $presentedByArray = $primaryPresentation->getMany('PresentedBy');
             if(!empty($presentedByArray)) {
                 $presenterIds = array();
                 foreach($presentedByArray as $presentedBy) {
-                	  $thisPresenter = $presentedBy->getOne('Presenter');
+                      $thisPresenter = $presentedBy->getOne('Presenter');
                     $presenterIds[] = $thisPresenter->get('id');
                 }
                 $presenterString = implode(',', $presenterIds);
@@ -66,7 +66,7 @@ class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
             if(!empty($attachmentArray)) {
                 $documentIds = array();
                 foreach($attachmentArray as $attachment) {
-                	  $thisDocument = $attachment->getOne('Document');
+                      $thisDocument = $attachment->getOne('Document');
                     $documentIds[] = $thisDocument->get('id');
                 }
                 $documentString = implode(',', $documentIds);
@@ -79,7 +79,7 @@ class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
         $emailTemplatesCategory = $this->modx->getObject('modCategory', array('category' => $this->modx->getOption('webinex.email_templates_category','null','Webinex Email Templates')));
         $emailTemplates = $this->modx->getCollection('modChunk',array('category' => $emailTemplatesCategory->id));
         foreach($emailTemplates as $emailTemplate) {
-        	$emailTemplatesArray[] = array($emailTemplate->name, $emailTemplate->description ? $emailTemplate->description : $emailTemplate->name );
+            $emailTemplatesArray[] = array($emailTemplate->name, $emailTemplate->description ? $emailTemplate->description : $emailTemplate->name );
         }
         $fullResourceArray['emailTemplates'] = $emailTemplatesArray;
            
@@ -92,7 +92,7 @@ class wxWebinarUpdateManagerController extends ResourceUpdateManagerController {
         MODx.onDocFormRender = "'.$this->onDocFormRender.'";
         MODx.ctx = "'.$this->resource->get('context_key').'";
         Ext.onReady(function() {
-        	   Webinex.config = '.$this->modx->toJSON($this->webinex->config).';
+               Webinex.config = '.$this->modx->toJSON($this->webinex->config).';
             MODx.load({
                 xtype: "webinex-page-webinar-update"
                 ,resource: "'.$this->resource->get('id').'"

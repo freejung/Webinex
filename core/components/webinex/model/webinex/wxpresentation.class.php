@@ -35,14 +35,14 @@ class wxPresentation extends xPDOSimpleObject {
         $thirdTpl = $this->xpdo->getOption('webinex.third_template',null,'wx-third.tpl');
         if($webinar = $this->getOne('Webinar')) {
             if($webinar->published) {
-        	    if($modx2 = new modX()) {
-				    $modx2->initialize($webinar->get('context_key'));
-				    $modx2->getService('error','error.modError');
-	                $fullArray = $this->toFullArray();
-	                $this->set('firsttpl', $modx2->getChunk($firstTpl, $fullArray));
-	                $this->set('secondtpl', $modx2->getChunk($secondTpl, $fullArray));
-	                $this->set('thirdtpl', $modx2->getChunk($thirdTpl, $fullArray));
-	                return $this->save();
+                if($modx2 = new modX()) {
+                    $modx2->initialize($webinar->get('context_key'));
+                    $modx2->getService('error','error.modError');
+                    $fullArray = $this->toFullArray();
+                    $this->set('firsttpl', $modx2->getChunk($firstTpl, $fullArray));
+                    $this->set('secondtpl', $modx2->getChunk($secondTpl, $fullArray));
+                    $this->set('thirdtpl', $modx2->getChunk($thirdTpl, $fullArray));
+                    return $this->save();
                 }
             }
         }

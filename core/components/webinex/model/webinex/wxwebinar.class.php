@@ -18,7 +18,7 @@ class wxWebinar extends modResource {
     function __construct(xPDO & $xpdo) {
         parent :: __construct($xpdo);
         $this->set('class_key','wxWebinar');
-    }	
+    }    
     public static function getControllerPath(xPDO &$modx) {
         return $modx->getOption('webinex.core_path',null,$modx->getOption('core_path').'components/webinex/').'controllers/resource/';
     }
@@ -76,12 +76,12 @@ class wxWebinar extends modResource {
                           $latestPresentation = $presentation;
                       }else{
                           if($latestPresentation->get('eventdate') <= $presentation->get('eventdate')) {
-                          	$latestPresentation->set('primary',0);
-                          	$latestPresentation->save();
-                          	$latestPresentation = $presentation;
+                              $latestPresentation->set('primary',0);
+                              $latestPresentation->save();
+                              $latestPresentation = $presentation;
                           }else{
-                          	$presentation->set('primary',0);
-                          	$presentation->save();
+                              $presentation->set('primary',0);
+                              $presentation->save();
                           }
                       }
                       $i++;
@@ -122,7 +122,7 @@ class wxWebinar extends modResource {
 }
 
 class wxWebinarCreateProcessor extends modResourceCreateProcessor {
-	 public function beforeSet() {
+     public function beforeSet() {
         $beforeSet = parent::beforeSet();
         $presentation = $this->modx->newObject('wxPresentation');
         $presentation->set('primary',1);
@@ -132,7 +132,7 @@ class wxWebinarCreateProcessor extends modResourceCreateProcessor {
         return $beforeSet;
     }
 
-	public function beforeSave() {
+    public function beforeSave() {
         $beforeSave = parent::beforeSave();
         $date = $this->getProperty('eventdate');
         if (empty($date)) {
@@ -150,10 +150,10 @@ class wxWebinarCreateProcessor extends modResourceCreateProcessor {
         if($primaryPresentation = $this->object->primaryPresentation()) {
             $presenterIds = array_filter($this->object->get('presenter'));
             if(!empty($presenterIds)) {
-            	  $this->modx->log(modX::LOG_LEVEL_DEBUG,'presenterIds exists');
-            	  $presentedByArray = array();
-            	  $i = 0;
-            	  foreach ($presenterIds as $presenterId) {
+                  $this->modx->log(modX::LOG_LEVEL_DEBUG,'presenterIds exists');
+                  $presentedByArray = array();
+                  $i = 0;
+                  foreach ($presenterIds as $presenterId) {
                      $presentedByArray[$i] = $this->modx->newObject('wxPresentedBy');
                      $presenter = $this->modx->getObject('wxPresenter',$presenterId);
                      $presentedByArray[$i]->addOne($presenter);
@@ -164,9 +164,9 @@ class wxWebinarCreateProcessor extends modResourceCreateProcessor {
             }
             $documentIds = array_filter($this->object->get('document'));
             if(!empty($documentIds)) {
-            	  $attachmentArray = array();
-            	  $i = 0;
-            	  foreach ($documentIds as $documentId) {
+                  $attachmentArray = array();
+                  $i = 0;
+                  foreach ($documentIds as $documentId) {
                      $attachmentArray[$i] = $this->modx->newObject('wxAttachment');
                      $document = $this->modx->getObject('wxDocument',$documentId);
                      $attachmentArray[$i]->addOne($document);
@@ -182,7 +182,7 @@ class wxWebinarCreateProcessor extends modResourceCreateProcessor {
 
 class wxWebinarUpdateProcessor extends modResourceUpdateProcessor {
 
-	public function beforeSave() {
+    public function beforeSave() {
         $beforeSave = parent::beforeSave();
         if($primaryPresentation = $this->object->primaryPresentation()) { 
             $primaryPresentation->fromArray($this->properties);
@@ -193,15 +193,15 @@ class wxWebinarUpdateProcessor extends modResourceUpdateProcessor {
             }
             $presenterIds = array_filter($this->object->get('presenter'));
             if(!empty($presenterIds)) {
-            	  $oldPresentedByArray = $primaryPresentation->getMany('PresentedBy');
-            	  if(!empty($oldPresentedByArray)) {
-            	  	   foreach ($oldPresentedByArray as $oldP) {
-            	  	   	$oldP->remove();
-            	  	   }
-            	  }
-            	  $presentedByArray = array();
-            	  $i = 0;
-            	  foreach ($presenterIds as $presenterId) {
+                  $oldPresentedByArray = $primaryPresentation->getMany('PresentedBy');
+                  if(!empty($oldPresentedByArray)) {
+                         foreach ($oldPresentedByArray as $oldP) {
+                             $oldP->remove();
+                         }
+                  }
+                  $presentedByArray = array();
+                  $i = 0;
+                  foreach ($presenterIds as $presenterId) {
                      $presentedByArray[$i] = $this->modx->newObject('wxPresentedBy');
                      $presenter = $this->modx->getObject('wxPresenter',$presenterId);
                      $presentedByArray[$i]->addOne($presenter);
@@ -211,15 +211,15 @@ class wxWebinarUpdateProcessor extends modResourceUpdateProcessor {
             }
             $documentIds = array_filter($this->object->get('document'));
             if(!empty($documentIds)) {
-            	  $oldAttachmentArray = $primaryPresentation->getMany('Attachment');
-            	  if(!empty($oldAttachmentArray)) {
-            	  	   foreach ($oldAttachmentArray as $oldA) {
-            	  	   	$oldA->remove();
-            	  	   }
-            	  }
-            	  $attachmentArray = array();
-            	  $i = 0;
-            	  foreach ($documentIds as $documentId) {
+                  $oldAttachmentArray = $primaryPresentation->getMany('Attachment');
+                  if(!empty($oldAttachmentArray)) {
+                         foreach ($oldAttachmentArray as $oldA) {
+                             $oldA->remove();
+                         }
+                  }
+                  $attachmentArray = array();
+                  $i = 0;
+                  foreach ($documentIds as $documentId) {
                      $attachmentArray[$i] = $this->modx->newObject('wxAttachment');
                      $document = $this->modx->getObject('wxDocument',$documentId);
                      $attachmentArray[$i]->addOne($document);

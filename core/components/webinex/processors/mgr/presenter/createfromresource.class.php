@@ -28,7 +28,7 @@ class PresenterCreateProcessor extends modObjectCreateProcessor {
         return parent::beforeSave();
     }
     
-	 public function afterSave() {
+     public function afterSave() {
         if($webinar = $this->modx->getObject('wxWebinar', $this->object->get('webinar'))) {
             $presenter = $this->object;
             $presentation = $webinar->primaryPresentation();

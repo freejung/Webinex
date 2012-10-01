@@ -67,11 +67,11 @@ if(array_filter($qArray)) $c->where(array_merge($whereArray, $cArray));
 if($limit || $offset) $c->limit($limit, $offset);
 
 if($presenters = $modx->getCollection('wxPresenter',$c)){
-	foreach ($presenters as $presenter) {
-	    $companyArray = array();
-	    if($thisCompany = $presenter->getOne('Company')) $companyArray = $thisCompany->toArray('company.');
-	    $presenterArray = $presenter->toArray();
-	    $output .= $modx->getChunk($tpl, array_merge($companyArray, $presenterArray));
-	}
+    foreach ($presenters as $presenter) {
+        $companyArray = array();
+        if($thisCompany = $presenter->getOne('Company')) $companyArray = $thisCompany->toArray('company.');
+        $presenterArray = $presenter->toArray();
+        $output .= $modx->getChunk($tpl, array_merge($companyArray, $presenterArray));
+    }
 }
 return $output;

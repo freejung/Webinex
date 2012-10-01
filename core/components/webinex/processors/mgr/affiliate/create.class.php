@@ -13,22 +13,22 @@ class AffiliateCreateProcessor extends modObjectCreateProcessor {
     public $languageTopics = array('webinex:default');
     public $objectType = 'webinex.affiliate';
 
-	public function beforeSet() {
-		$beforeSet = parent::beforeSet();
-		$random = mt_rand(1000000,10000000);
+    public function beforeSet() {
+        $beforeSet = parent::beforeSet();
+        $random = mt_rand(1000000,10000000);
         $affiliates = $this->modx->getCollection('wxAffiliate');
         $unique = TRUE;
         do {
-        	$unique = TRUE;
-	        foreach ($affiliates as $affiliate) {
-	        	if($affiliate->code == $random) { 
-		        	$unique = FALSE;
-		        	$random = mt_rand(1000000,10000000);
-		        }
-	        }
+            $unique = TRUE;
+            foreach ($affiliates as $affiliate) {
+                if($affiliate->code == $random) { 
+                    $unique = FALSE;
+                    $random = mt_rand(1000000,10000000);
+                }
+            }
         } while ($unique == FALSE);
         $this->setProperty('code',$random);
-		return $beforeSet;
+        return $beforeSet;
     }
  
     public function beforeSave() {

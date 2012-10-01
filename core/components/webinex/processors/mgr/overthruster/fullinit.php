@@ -22,7 +22,7 @@ $allPresentations = $modx->getCollection('wxPresentation',array('primary' => 1))
 $allPresentations = array_reverse($allPresentations);
 $nps = count($allPresentations);
 foreach($allPresentations as $presentation) {
-	$modx->log(modX::LOG_LEVEL_INFO, 'Initializing templates for presentation '.$i.' of '.$nps.', id= '.$presentation->id);
+    $modx->log(modX::LOG_LEVEL_INFO, 'Initializing templates for presentation '.$i.' of '.$nps.', id= '.$presentation->id);
     if(!$presentation->setTemplates()) $success = 0;
     $i ++;
 }

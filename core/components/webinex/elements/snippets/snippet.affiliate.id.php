@@ -39,74 +39,74 @@ if(filter_has_var(INPUT_GET, 'ai')){
 }
 
 if(filter_has_var(INPUT_GET, 'jn')){
-	if(filter_input(INPUT_GET, 'jn', FILTER_VALIDATE_INT)) {
-	    $join = $_GET['jn'];
+    if(filter_input(INPUT_GET, 'jn', FILTER_VALIDATE_INT)) {
+        $join = $_GET['jn'];
     }
 }
 
 if(filter_has_var(INPUT_GET, 'em')){
-	if(filter_input(INPUT_GET, 'em', FILTER_VALIDATE_EMAIL)) {
-	    $email = $_GET['em'];
+    if(filter_input(INPUT_GET, 'em', FILTER_VALIDATE_EMAIL)) {
+        $email = $_GET['em'];
     }
 }
 
 $resource = $modx->resource;
 if($affiliateCode){
-	if($affiliate = $modx->getObject('wxAffiliate', array('code' => $affiliateCode))){
-	    $referral = $modx->newObject('wxReferral');
-	    $referral->addOne($affiliate);
-	    $referral->set('entry',$resource->id);
-	    $referral->set('createdon',time());
-	    if($modx->user->isAuthenticated($modx->context->key)) {
-	        $user = $modx->user;
-	        if($user->class_key == wxProspect) {
-	            $referral->addOne($user);
-	        }
-	    }
-	    $referral->save();
-	    $_SESSION['wxReferralId'] = $referral->id;
-	    $modx->setPlaceholder('wx-affiliate-name', $affiliate->name);
-	    $modx->setPlaceholder('wx-affiliate-code', $affiliateCode);
-	    $modx->setPlaceholder('wx-affiliate-logo', $affiliate->logo); 
-	    $modx->setPlaceholder('wx-affiliate-state', $affiliate->state); 
-	    $modx->setPlaceholder('wx-referral-id', $referral->id);      
-	}
+    if($affiliate = $modx->getObject('wxAffiliate', array('code' => $affiliateCode))){
+        $referral = $modx->newObject('wxReferral');
+        $referral->addOne($affiliate);
+        $referral->set('entry',$resource->id);
+        $referral->set('createdon',time());
+        if($modx->user->isAuthenticated($modx->context->key)) {
+            $user = $modx->user;
+            if($user->class_key == wxProspect) {
+                $referral->addOne($user);
+            }
+        }
+        $referral->save();
+        $_SESSION['wxReferralId'] = $referral->id;
+        $modx->setPlaceholder('wx-affiliate-name', $affiliate->name);
+        $modx->setPlaceholder('wx-affiliate-code', $affiliateCode);
+        $modx->setPlaceholder('wx-affiliate-logo', $affiliate->logo); 
+        $modx->setPlaceholder('wx-affiliate-state', $affiliate->state); 
+        $modx->setPlaceholder('wx-referral-id', $referral->id);      
+    }
 }
 
 if($join) {
-	//echo('join true<br>');
-	if($webinar = $modx->getObject('wxWebinar', $resource->id)) {
-		if($presentation = $webinar->primaryPresentation()) {
-			if($presentation->get('recording')) return '';
-			if($email) {
-				if($prospect = $modx->getObject('wxProspect', array('username' => $email))) {
-					//echo('<br><br>prospect id ='.$prospect->get('id'));
-					$c = $modx->newQuery('wxRegistration');
-					
-					//echo('<br>presentation id='.$presentation->get('id'));
-					$whereArray = array('prospect' => $prospect->get('id'), 'presentation' => $presentation->get('id'));
-					$c->where($whereArray);
-					if($registrations = $modx->getCollection('wxRegistration', $c)) {
-						$joinUrl = '';
-						foreach($registrations as $registration) {
-							$reg = $registration->get('reg');
-							if(!empty($reg)){
-								$joinUrl = $registration->get('reg');
-							}
-						}
-						if(!empty($joinUrl)) {
-							//echo($joinUrl);
-							$modx->sendRedirect($joinUrl);
-						}
-					}
-				}
-			}
-			if($joinUrl = $presentation->get('joinurl')) {
-				//echo('default join url='.$joinUrl);
-				$modx->sendRedirect($joinUrl);
-			}
-		}
-	}
+    //echo('join true<br>');
+    if($webinar = $modx->getObject('wxWebinar', $resource->id)) {
+        if($presentation = $webinar->primaryPresentation()) {
+            if($presentation->get('recording')) return '';
+            if($email) {
+                if($prospect = $modx->getObject('wxProspect', array('username' => $email))) {
+                    //echo('<br><br>prospect id ='.$prospect->get('id'));
+                    $c = $modx->newQuery('wxRegistration');
+                    
+                    //echo('<br>presentation id='.$presentation->get('id'));
+                    $whereArray = array('prospect' => $prospect->get('id'), 'presentation' => $presentation->get('id'));
+                    $c->where($whereArray);
+                    if($registrations = $modx->getCollection('wxRegistration', $c)) {
+                        $joinUrl = '';
+                        foreach($registrations as $registration) {
+                            $reg = $registration->get('reg');
+                            if(!empty($reg)){
+                                $joinUrl = $registration->get('reg');
+                            }
+                        }
+                        if(!empty($joinUrl)) {
+                            //echo($joinUrl);
+                            $modx->sendRedirect($joinUrl);
+                        }
+                    }
+                }
+            }
+            if($joinUrl = $presentation->get('joinurl')) {
+                //echo('default join url='.$joinUrl);
+                $modx->sendRedirect($joinUrl);
+            }
+        }
+    }
 }
 
 return '';

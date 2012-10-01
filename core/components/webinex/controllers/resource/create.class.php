@@ -52,7 +52,7 @@ class wxWebinarCreateManagerController extends ResourceCreateManagerController {
         MODx.onDocFormRender = "'.$this->onDocFormRender.'";
         MODx.ctx = "'.$this->ctx.'";
         Ext.onReady(function() {
-        	   Webinex.config = '.$this->modx->toJSON($this->webinex->config).';
+               Webinex.config = '.$this->modx->toJSON($this->webinex->config).';
             MODx.load({
                 xtype: "webinex-page-webinar-create"
                 ,record: '.$this->modx->toJSON($this->resourceArray).'

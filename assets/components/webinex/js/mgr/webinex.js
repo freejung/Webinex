@@ -128,6 +128,7 @@ Webinex.window.CreatePresenter = function(config) {
             ,autoheight: true
             ,layout: 'column'
             ,width: 770
+            ,style: 'border:0'
             ,items: [ 
                 {
                 xtype: 'fieldset'
@@ -135,6 +136,7 @@ Webinex.window.CreatePresenter = function(config) {
                 ,title: '' 
                 ,autoheight: true
                 ,padding: 5
+                ,style: 'border:0'
                 ,items: 
                     [
                        {
@@ -194,6 +196,7 @@ Webinex.window.CreatePresenter = function(config) {
                 ,title: '' 
                 ,autoheight: true
                 ,padding: 5
+                ,style: 'border:0'
                 ,items: 
                     [
                        {

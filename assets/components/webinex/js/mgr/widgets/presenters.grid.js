@@ -149,6 +149,7 @@ Webinex.window.UpdatePresenter = function(config) {
             ,autoheight: true
             ,layout: 'column'
             ,width: 770
+            ,style: 'border:0'
             ,items: [ 
                 {
                 xtype: 'fieldset'
@@ -156,6 +157,7 @@ Webinex.window.UpdatePresenter = function(config) {
                 ,title: '' 
                 ,autoheight: true
                 ,padding: 5
+                ,style: 'border:0'
                 ,items: 
                     [
                        {
@@ -221,6 +223,7 @@ Webinex.window.UpdatePresenter = function(config) {
                 ,title: '' 
                 ,autoheight: true
                 ,padding: 5
+                ,style: 'border:0'
                 ,items: 
                     [
                        {

@@ -56,9 +56,9 @@ if($grandparents != '') {
 $c->where($whereArray);
 
 if($presentationId) {
-	$presentations = array($modx->getObject('wxPresentation',$presentationId));
+    $presentations = array($modx->getObject('wxPresentation',$presentationId));
 }else {
-	$presentations = $modx->getCollection('wxPresentation',$c);
+    $presentations = $modx->getCollection('wxPresentation',$c);
 }
 
 /* iterate */
