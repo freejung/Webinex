@@ -49,13 +49,10 @@ if(!$existingUser) {
     $newProspect->addSessionContext($modx->context->key);
 }
 $profile = $modx->user->getOne('Profile');
-$profileArray = array(
-	'email' => $email,
-	'fullname' => $hook->getValue('firstName').' '.$hook->getValue('lastName'),
-	'state' => $hook->getValue('stateOrProvince'),
-	'phone' => $hook->getValue('businessPhone'),
-);
-$profile->fromArray($profileArray);
+$profile->set('email',$email);
+if($hook->getValue('firstName') || $hook->getValue('lastName')) $profile->set('fullname',$hook->getValue('firstName').' '.$hook->getValue('lastName'));
+if($hook->getValue('stateOrProvince')) $profile->set('state',$hook->getValue('stateOrProvince'));
+if($hook->getValue('businessPhone')) $profile->set('phone',$hook->getValue('businessPhone'));
 $fields = $profile->get('extended');
 if($hook->getValue('Company')) $fields['Company'] = $hook->getValue('Company');
 if($hook->getValue('title')) $fields['Title'] = $hook->getValue('title');
