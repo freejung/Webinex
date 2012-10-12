@@ -56,7 +56,16 @@ class wxPresentation extends xPDOSimpleObject {
         if($trailer = $this->getOne('Trailer')) {
             $trailerArray = $trailer->toArray('tr.');
         }
-        return array_merge($webinarArray, $presentationArray, $recordingArray, $trailerArray, $tvs);
+        $presenterNames = '';
+        if($presentedByArray = $this->getMany('PresentedBy')) {
+        	foreach ($presentedByArray as $presentedBy) {
+        		$presenter = $presentedBy->getOne('Presenter');
+        		$presenterNames .= $presenter->get('firstname').' '.$presenter->get('lastname').', ';
+        	}
+        	$presenterNames = rtrim($presenterNames, ', ');
+        }
+        $presenterNamesArray = array('presenterNames' => $presenterNames);
+        return array_merge($webinarArray, $presentationArray, $recordingArray, $trailerArray, $tvs, $presenterNamesArray);
     }
 
     /* setTemplates processes and stores the three default presentation templates */
