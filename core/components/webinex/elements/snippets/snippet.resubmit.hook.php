@@ -25,10 +25,16 @@
  * @subpackage snippets
  */
 $url = $modx->getOption('url',$scriptProperties,0);
-if(!$hook || !$url) {
+$fieldValues = $modx->getOption('fieldValues',$scriptProperties,'');
+if(!$url) {
     return FALSE;
 }
-$allFormFields = $hook->getValues();
+$fieldValueArray = $modx->fromJSON($fieldValues);
+$allFormFields = array();
+if($hook) {
+	$allFormFields = $hook->getValues();
+}
+$allFormFields = array_merge($allFormFields, $fieldValues);
 $postItems = array();
 foreach ($allFormFields as $key => $value) {
     $postItems[] = $key . '=' . $value;

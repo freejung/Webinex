@@ -14,7 +14,7 @@ class wxProspect extends modUser {
         $this->set('class_key','wxProspect');
     }
     
-    /* Set up this user with username=email, log in to current context, and save */
+    /* Set up this user with username=email and save */
     public function standardSetup ($email) {
         if ($this->xpdo instanceof modX) {
             $this->set('username',$email);
