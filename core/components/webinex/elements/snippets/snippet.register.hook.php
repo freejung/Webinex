@@ -50,10 +50,19 @@ if(!$existingUser) {
 }
 $profile = $modx->user->getOne('Profile');
 $profile->set('email',$email);
-if($hook->getValue('firstName') || $hook->getValue('lastName')) $profile->set('fullname',$hook->getValue('firstName').' '.$hook->getValue('lastName'));
 if($hook->getValue('stateOrProvince')) $profile->set('state',$hook->getValue('stateOrProvince'));
 if($hook->getValue('businessPhone')) $profile->set('phone',$hook->getValue('businessPhone'));
 $fields = $profile->get('extended');
+$fullName = '';
+if($firstName = $hook->getValue('firstName')) {
+	$fullName .= $firstName;
+	$fields['firstname'] = $firstName;
+}
+if($lastName = $hook->getValue('lastName')) {
+	$fullName .= ' '.$lastName;
+	$fields['lastname'] = $lastName;
+}
+$profile->set('fullname',trim($fullName));
 if($hook->getValue('Company')) $fields['Company'] = $hook->getValue('Company');
 if($hook->getValue('title')) $fields['Title'] = $hook->getValue('title');
 $profile->set('extended',$fields);

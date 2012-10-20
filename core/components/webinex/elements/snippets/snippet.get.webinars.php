@@ -36,6 +36,8 @@ $dir = $modx->getOption('dir',$scriptProperties,'ASC');
 $parents = $modx->getOption('parents',$scriptProperties,'');
 $grandparents = $modx->getOption('grandparents',$scriptProperties,'');
 $include = $modx->getOption('include',$scriptProperties,'');
+$prospects = $modx->getOption('prospects',$scriptProperties,'');
+$primaryOnly = $modx->getOption('primaryOnly',$scriptProperties,1);
 $limit = $modx->getOption('limit',$scriptProperties,0);
 $offset = $modx->getOption('offset',$scriptProperties,0);
 $timeshift = $modx->getOption('timeshift',$scriptProperties,1800);
@@ -53,9 +55,10 @@ $includeTVList = !empty($includeTVList) ? explode(',', $includeTVList) : array()
 $processTVList = !empty($processTVList) ? explode(',', $processTVList) : array();
 $prepareTVList = !empty($prepareTVList) ? explode(',', $prepareTVList) : array();
 
+$whereArray = array();
 $c = $modx->newQuery('wxPresentation');
 $c->sortby($sort,$dir);
-$whereArray = array('primary' => 1);
+if($primaryOnly) $whereArray = array('primary' => 1);
 
 if(!$upcoming) {
     $whereArray['recording:!='] = '';
@@ -77,6 +80,24 @@ if($grandparents != '') {
 if($include != '') {
     $includeArray = explode(',',$include);
     $whereArray['webinar:IN'] = $includeArray;
+}
+
+if($prospects != '') {
+    $prospectIdArray = explode(',',$prospects);
+    $prospectPresentationArray =  array();
+    $prospectQuery = $modx->newQuery('wxProspect');
+    $prospectQuery->where(array('id:IN' => $prospectIdArray));
+    if($prospectArray = $modx->getCollection('wxProspect', $prospectQuery)){
+        foreach($prospectArray as $prospect) {
+            if ($registrations = $prospect->getMany('Registration')) {
+                foreach ($registrations as $registration) {
+                	$prospectPresentationId = $registration->get('presentation');
+                    $prospectPresentationArray[] = $registration->get('presentation');
+                }
+            }
+        }
+        $whereArray['id:IN'] = array_unique($prospectPresentationArray);
+    }
 }
 
 $c->where($whereArray);

@@ -34,7 +34,7 @@ $allFormFields = array();
 if($hook) {
 	$allFormFields = $hook->getValues();
 }
-$allFormFields = array_merge($allFormFields, $fieldValues);
+$allFormFields = array_merge($allFormFields, $fieldValueArray);
 $postItems = array();
 foreach ($allFormFields as $key => $value) {
     $postItems[] = $key . '=' . $value;

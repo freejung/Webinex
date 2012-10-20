@@ -24,10 +24,34 @@
  * @package webinex
  * @subpackage snippets
  */
-if(!$hook) return FALSE;
-$user = $hook->getValue('register.user');
-$profile = $hook->getValue('register.profile');
-$user->set('class_key', 'wxProspect');
-if($hook->getValue('firstName') || $hook->getValue('lastName')) $profile->set('fullname',$hook->getValue('firstName').' '.$hook->getValue('lastName'));
-$saved = $user->save();
+if(!$hook) {
+	$modx->log(modX::LOG_LEVEL_ERROR, 'Join Hook called with no hook');
+	return FALSE;
+}
+$debug = $modx->getOption('debug',$scriptProperties,0);
+
+$modx->setLogLevel(modX::LOG_LEVEL_INFO);
+if ($debug) $modx->setLogLevel(modX::LOG_LEVEL_DEBUG);
+
+$modx->log(modX::LOG_LEVEL_DEBUG, 'Join hook called');
+if($user = $hook->getValue('register.user')){
+	$modx->log(modX::LOG_LEVEL_DEBUG, 'getting user from hook');
+	$profile = $hook->getValue('register.profile');
+	$user->set('class_key', 'wxProspect');
+	$fields = $profile->get('extended');
+	$fullName = '';
+	if($firstName = $hook->getValue('firstName')) {
+		$fullName .= $firstName;
+		$fields['firstname'] = $firstName;
+	}
+	if($lastName = $hook->getValue('lastName')) {
+		$fullName .= ' '.$lastName;
+		$fields['lastname'] = $lastName;
+	}
+	if ($firstName || $lastName) $profile->set('fullname',trim($fullName));
+	$saved = $user->save();
+	if(!$saved) $modx->log(modX::LOG_LEVEL_ERROR, 'Join Hook: user not saved');
+}else{
+	$modx->log(modX::LOG_LEVEL_ERROR, 'Join Hook: cannot get user');
+}
 return TRUE;
