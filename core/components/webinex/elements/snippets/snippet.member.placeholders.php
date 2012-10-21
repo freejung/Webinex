@@ -30,10 +30,19 @@
  */
 
 $groupChunks = $modx->getOption('groupChunks',$scriptProperties,'');
-$default= $modx->getOption('default',$scriptProperties,'');
+$default = $modx->getOption('default',$scriptProperties,'');
+$emailParam = $modx->getOption('emailParam',$scriptProperties,'em');
+$emailPlaceholder = $modx->getOption('emailPlaceholder',$scriptProperties,'username');
 
 $chunkDataArray = $modx->fromJSON($groupChunks );
 $defaultArray = $modx->fromJSON($default);
+
+if(filter_has_var(INPUT_GET, $emailParam)){
+  if (filter_input(INPUT_GET, $emailParam, FILTER_VALIDATE_EMAIL)){
+    $email = $_GET['$emailParam'];
+    $modx->setPlaceholder($emailPlaceholder, $email);
+  }
+}
 
 if($modx->user->isAuthenticated($modx->context->key)) {
 	foreach($chunkDataArray as $group => $placeholders) {

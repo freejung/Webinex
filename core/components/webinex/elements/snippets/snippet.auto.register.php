@@ -43,19 +43,21 @@ if($modx->user->isAuthenticated($modx->context->key)) {
 	    if($modx->resource->class_key == 'wxWebinar') {
 			$webinar = $modx->getObject('wxWebinar',$modx->resource->id);
 		    $presentation = $webinar->primaryPresentation();
-		    $modx->user->registerFor(array($presentation));
-		    $modx->log(modX::LOG_LEVEL_DEBUG, 'user '.$modx->user->username.' registered for presentation'.$presentation->id);
-			if ($resubmitUrl) {
-				$modx->log(modX::LOG_LEVEL_DEBUG, 'resubmit URL:'.$resubmitUrl);
-		    	$profile=$modx->user->getOne('Profile');
-			    $email = $profile->email;
-			    $modx->log(modX::LOG_LEVEL_DEBUG, 'email: '.$email);
-			    $fieldValueArray['emailAddress'] = $email;
-		    	$modx->runSnippet('resubmitHook', array('url' => $resubmitUrl, 'fieldValues' => $modx->toJSON($fieldValueArray)));
-		    	$modx->log(modX::LOG_LEVEL_DEBUG, 'field values: '.print_r($fieldValueArray,true));
+		    if(!$presentation->get('recording')) {
+			    $modx->user->registerFor(array($presentation));
+			    $modx->log(modX::LOG_LEVEL_DEBUG, 'user '.$modx->user->username.' registered for presentation'.$presentation->id);
+				if ($resubmitUrl) {
+					$modx->log(modX::LOG_LEVEL_DEBUG, 'resubmit URL:'.$resubmitUrl);
+			    	$profile=$modx->user->getOne('Profile');
+				    $email = $profile->email;
+				    $modx->log(modX::LOG_LEVEL_DEBUG, 'email: '.$email);
+				    $fieldValueArray['emailAddress'] = $email;
+			    	$modx->runSnippet('resubmitHook', array('url' => $resubmitUrl, 'fieldValues' => $modx->toJSON($fieldValueArray)));
+			    	$modx->log(modX::LOG_LEVEL_DEBUG, 'field values: '.print_r($fieldValueArray,true));
+			    }
+			    $thanksUrl = $modx->makeUrl($thanksPage, $modx->context->key, array('ps' => $presentation->id), 'http');
+			    $modx->sendRedirect($thanksUrl);
 		    }
-		    $thanksUrl = $modx->makeUrl($thanksPage, $modx->context->key, array('ps' => $modx->resource->id), 'http');
-		    $modx->sendRedirect($thanksUrl);
 		}
 	}
 }
