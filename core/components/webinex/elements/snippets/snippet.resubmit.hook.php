@@ -25,7 +25,7 @@
  * @subpackage snippets
  */
 $url = $modx->getOption('url',$scriptProperties,0);
-$fieldValues = $modx->getOption('fieldValues',$scriptProperties,'');
+$fieldValues = $modx->getOption('fieldValues',$scriptProperties,'{}');
 if(!$url) {
     return FALSE;
 }
