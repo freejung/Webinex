@@ -31,9 +31,9 @@ if(empty($username)) return FALSE;
 
 $registerId = $modx->getOption('registerId',$scriptProperties,1);
 
-if($prospect=$modx->getObject('wxProspect',array('username' => $email))) {
+if($prospect=$modx->getObject('wxProspect',array('username' => $username))) {
     return TRUE;
-}elseif($user=$modx->getObject('modUser',array('username' => $email))) {
+}elseif($user=$modx->getObject('modUser',array('username' => $username))) {
 	$user->set('class_key', 'wxProspect');
 	return TRUE;
 }else{
